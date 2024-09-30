@@ -1,4 +1,4 @@
-#!/Users/suesue/365lab/.venv/bin/python
+#!/Users/suesue/potion365/.venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys
