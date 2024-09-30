@@ -154,7 +154,7 @@ def checkout(cart_id: int, cart_checkout: CartCheckout):
         del cart_dict[cart_id]
 
 
-        return {"total_potions_bought": quantity, "total_gold_paid": price}
+        return {"message": "Success", "total_potions_bought": quantity, "total_gold_paid": price}
     else:
         return {"message": "Not enough green potions for checkout", "Current green potions available": cur_num_green_potions}
 
