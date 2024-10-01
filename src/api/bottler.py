@@ -49,7 +49,7 @@ def post_deliver_bottles(potions_delivered: list[PotionInventory], order_id: int
                 cur_num_green_ml = remaining_ml
 
         connection.execute(sqlalchemy.text(
-            "UPDATE global_inventory SET num_green_potions = :num_green_potions, num_green_ml = :cur_num_green_ml WHERE id = 1"
+            "UPDATE global_inventory SET num_green_potions = :num_green_potions, num_green_ml = :num_green_ml WHERE id = 1"
         ), {
             'num_green_potions': cur_num_green_potions,
             'num_green_ml': cur_num_green_ml

@@ -145,17 +145,20 @@ def checkout(cart_id: int, cart_checkout: CartCheckout):
             cur_num_green_potions = row[0]  # Access the values directly from the row
             cur_gold = row[1]
 
-    if quantity <= cur_num_green_potions:
-        cur_num_green_potions -= quantity
-        cur_gold += price
-        connection.execute(sqlalchemy.text(
-            "UPDATE global_inventory SET num_green_portions = {cur_num_green_potions}, gold = {cur_gold} WHERE id = 1"
-        ))
+        if quantity <= cur_num_green_potions:
+            cur_num_green_potions -= quantity
+            cur_gold += price
+            connection.execute(sqlalchemy.text(
+                "UPDATE global_inventory SET num_green_potions = :num_green_potions, gold = :gold WHERE id = 1"
+            ), {
+                'num_green_potions': cur_num_green_potions,
+                'gold' : cur_gold
+            })
 
-        del cart_dict[cart_id]
+            del cart_dict[cart_id]
 
 
-        return {"message": "Success", "total_potions_bought": quantity, "total_gold_paid": price}
-    else:
-        return {"message": "Not enough green potions for checkout", "Current green potions available": cur_num_green_potions}
+            return {"message": "Success", "total_potions_bought": quantity, "total_gold_paid": price}
+        else:
+            return {"message": "Not enough green potions for checkout", "Current green potions available": cur_num_green_potions}
 

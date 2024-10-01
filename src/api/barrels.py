@@ -41,8 +41,11 @@ def post_deliver_barrels(barrels_delivered: list[Barrel], order_id: int):
                 cur_gold -= barrel.price * barrels_delivered
 
                 connection.execute(sqlalchemy.text(
-                    "UPDATE global_inventory SET num_green_ml={cur_num_green_ml}, gold={cur_gold} FROM global_inventory WHERE id = 1"
-                ))
+                    "UPDATE global_inventory SET num_green_ml=:num_green_ml, gold=:gold FROM global_inventory WHERE id = 1"
+                ), {
+                    'num_green_ml' : cur_num_green_ml,
+                    'gold': cur_gold
+                })
 
     print(f"barrels delievered: {barrels_delivered} order_id: {order_id}")
 
