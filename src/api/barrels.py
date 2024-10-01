@@ -36,7 +36,7 @@ def post_deliver_barrels(barrels_delivered: list[Barrel], order_id: int):
             cur_gold = row[2]
 
         for barrel in barrels_delivered:
-            if "GREEN" in barrel.sku.upper():
+            if "SMALL_GREEN_BARREL" in barrel.sku.upper():
                 cur_num_green_ml += barrel.ml_per_barrel * barrel.quantity
                 cur_gold -= barrel.price * barrels_delivered
 
@@ -70,7 +70,7 @@ def get_wholesale_purchase_plan(wholesale_catalog: list[Barrel]):
 
     # Purchase a new small green potion barrel only if the number of potions in inventory is less than 10
     for barrel in wholesale_catalog:
-        if "GREEN" in barrel.sku.upper() and cur_num_green_potions < 10 and cur_gold >= barrel.price:
+        if "SMALL_GREEN_BARREL" in barrel.sku.upper() and cur_num_green_potions < 10 and cur_gold >= barrel.price:
             return [
             {
                 "sku": "SMALL_GREEN_BARREL",
