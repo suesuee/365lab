@@ -20,10 +20,11 @@ def get_inventory():
             "SELECT num_green_potions, num_green_ml, gold FROM global_inventory WHERE id = 1"
         ))
 
-        row = result.first()
-        cur_num_green_potions = row['num_green_potions']
-        cur_num_green_ml = row['num_green_ml']
-        cur_gold = row['gold']
+        row = result.fetchone()
+        if row: 
+            cur_num_green_potions = row[0]
+            cur_num_green_ml = row[1]
+            cur_gold = row[2]
 
     return {
         "number_of_potions": cur_num_green_potions, 

@@ -32,9 +32,10 @@ def post_deliver_bottles(potions_delivered: list[PotionInventory], order_id: int
             "SELECT num_green_potions, num_green_ml FROM global_inventory WHERE id = 1"
         ))
 
-        row = result.first()
-        cur_num_green_potions = row['num_green_potions']
-        cur_num_green_ml = row['num_green_ml']
+        row = result.fetchone()
+        if row: 
+            cur_num_green_potions = row[0]
+            cur_num_green_ml = row[1]
 
         for potion in potions_delivered:
             if potion.potion_type == POTION_TYPES["green"]:
@@ -48,8 +49,11 @@ def post_deliver_bottles(potions_delivered: list[PotionInventory], order_id: int
                 cur_num_green_ml = remaining_ml
 
         connection.execute(sqlalchemy.text(
-            "UPDATE global_inventory SET num_green_potions = {cur_num_green_potions}, num_green_ml = {cur_num_green_ml} WHERE id = 1"
-        ))               
+            "UPDATE global_inventory SET num_green_potions = :num_green_potions, num_green_ml = :cur_num_green_ml WHERE id = 1"
+        ), {
+            'num_green_potions': cur_num_green_potions,
+            'num_green_ml': cur_num_green_ml
+        })               
 
     print(f"potions delievered: {potions_delivered} order_id: {order_id}")
 
@@ -66,8 +70,9 @@ def get_bottle_plan():
             "SELECT num_green_ml FROM global_inventory WHERE id = 1"
         ))
 
-        row = result.first()
-        cur_num_green_ml = row['num_green_ml']
+        row = result.fetchone()
+        if row:
+            cur_num_green_ml = row[0]
 
     # Each bottle has a quantity of what proportion of red, blue, and
     # green potion to add.

@@ -28,10 +28,12 @@ def post_deliver_barrels(barrels_delivered: list[Barrel], order_id: int):
         result = connection.execute(sqlalchemy.text(
             "SELECT num_green_potions, num_green_ml, gold FROM global_inventory WHERE id = 1"
         ))
-        row = result.first()
-        cur_num_green_potions = row['num_green_potions']
-        cur_num_green_ml = row['num_green_ml']
-        cur_gold = row['gold']
+        
+        row = result.fetchone()
+        if row:
+            cur_num_green_potions = row[0]
+            cur_num_green_ml = row[1]
+            cur_gold = row[2]
 
         for barrel in barrels_delivered:
             if "GREEN" in barrel.sku.upper():
@@ -56,10 +58,12 @@ def get_wholesale_purchase_plan(wholesale_catalog: list[Barrel]):
         result = connection.execute(sqlalchemy.text(
             "SELECT num_green_potions, num_green_ml, gold FROM global_inventory WHERE id = 1"
         ))
-    row = result.first()
-    cur_num_green_potions = row['num_green_potions']
-    cur_num_green_ml = row['num_green_ml']
-    cur_gold = row['gold']
+    
+    row = result.fetchone()
+    if row:
+        cur_num_green_potions = row[0]
+        cur_num_green_ml = row[1]
+        cur_gold = row[2]
 
     # Purchase a new small green potion barrel only if the number of potions in inventory is less than 10
     for barrel in wholesale_catalog:

@@ -111,9 +111,9 @@ def set_item_quantity(cart_id: int, item_sku: str, cart_item: CartItem):
         result = connection.execute(sqlalchemy.text(
             "SELECT num_green_potions FROM global_inventory WHERE id = 1"
         ))
-
-        row = result.first()
-        cur_num_green_potions = row['num_green_potions']
+        row = result.fetchone()
+        if row:
+            cur_num_green_potions = row[0]
 
     # Check the # of items customer added to cart is not more than available potions in the inventory
     if cart_item.quantity <= cur_num_green_potions:
@@ -140,9 +140,10 @@ def checkout(cart_id: int, cart_checkout: CartCheckout):
             "SELECT num_green_potions, gold FROM global_inventory WHERE id = 1"
         ))
 
-        row = result.first()
-        cur_num_green_potions = row['num_green_potions']
-        cur_gold = row['gold']
+        row = result.fetchone()
+        if row:  # Ensure that the row is not None
+            cur_num_green_potions = row[0]  # Access the values directly from the row
+            cur_gold = row[1]
 
     if quantity <= cur_num_green_potions:
         cur_num_green_potions -= quantity

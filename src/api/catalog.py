@@ -16,9 +16,11 @@ def get_catalog():
             "SELECT num_green_potions FROM global_inventory WHERE id = 1"
         ))
 
+        row = result.fetchone()
+
+        if row:
         # Fetching data for one row only as of now
-        row = result.first()
-        cur_green_potions = row['num_green_potions']
+            cur_green_potions = row[0]
 
     # Offer up for sale in the catalog only the amount of green potions that actually exist currently in the inventory!
     if cur_green_potions > 0: 
