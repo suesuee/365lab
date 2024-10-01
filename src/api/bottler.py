@@ -37,6 +37,7 @@ def post_deliver_bottles(potions_delivered: list[PotionInventory], order_id: int
             cur_num_green_potions = row[0]
             cur_num_green_ml = row[1]
 
+        remaining_ml = 0
         for potion in potions_delivered:
             if potion.potion_type == POTION_TYPES["green"]:
                 cur_num_green_ml += potion.quantity * 100 # Add ml for the delivered potions
